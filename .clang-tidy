@@ -1,0 +1,41 @@
+---
+# Hook and ABI code needs raw casts, integer-to-pointer conversions, and fixed
+# Qt signatures, so the checks that only flag those patterns are disabled.
+Checks: >
+  -*,
+  bugprone-*,
+  -bugprone-easily-swappable-parameters,
+  -bugprone-exception-escape,
+  clang-analyzer-*,
+  cppcoreguidelines-missing-std-forward,
+  cppcoreguidelines-special-member-functions,
+  misc-definitions-in-headers,
+  misc-misplaced-const,
+  misc-redundant-expression,
+  misc-unused-alias-decls,
+  misc-unused-parameters,
+  misc-unused-using-decls,
+  modernize-use-emplace,
+  modernize-use-nullptr,
+  modernize-use-override,
+  modernize-use-using,
+  performance-*,
+  -performance-no-int-to-ptr,
+  portability-*,
+  -portability-template-virtual-member-function,
+  readability-braces-around-statements,
+  readability-container-size-empty,
+  readability-duplicate-include,
+  readability-misleading-indentation,
+  readability-redundant-control-flow,
+  readability-redundant-string-cstr,
+  readability-redundant-string-init
+HeaderFilterRegex: '(include|src|tests)[/\\]'
+ExcludeHeaderFilterRegex: 'third_party'
+WarningsAsErrors: ''
+CheckOptions:
+  - key: cppcoreguidelines-special-member-functions.AllowSoleDefaultDtor
+    value: true
+  - key: cppcoreguidelines-special-member-functions.AllowMissingMoveFunctionsWhenCopyIsDeleted
+    value: true
+...

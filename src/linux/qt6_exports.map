@@ -1,0 +1,10 @@
+Qt_6 {
+  global:
+    _ZN2QT7QString8fromUtf8ENS_14QByteArrayViewE;
+    _ZN2QT16QCoreApplication9translateEPKcS2_S2_i;
+    _ZN2QT6QLabel7setTextERKNS_7QStringE;
+    _ZN2QT7QWidget14setWindowTitleERKNS_7QStringE;
+    _ZN2QT8QPainter8drawTextERKNS_5QRectEiRKNS_7QStringEPS1_;
+  local:
+    *;
+};

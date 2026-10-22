@@ -1,0 +1,8 @@
+IDALingo
+Copyright (C) 2026 Youchuang Studio
+
+Original project and ongoing maintenance by Youchuang Studio.
+Redistributions must retain this notice and the attribution above.
+
+IDALingo includes MinHook under its own BSD 2-Clause license. The complete
+MinHook license is available at third_party/minhook/LICENSE.txt.

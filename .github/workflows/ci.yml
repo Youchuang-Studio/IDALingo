@@ -1,0 +1,63 @@
+name: CMake CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install clang tools
+        run: python -m pip install "clang-format==20.1.*" "clang-tidy==20.1.*"
+      - name: Check formatting
+        run: git ls-files -- '*.cpp' '*.hpp' ':!:third_party/**' | xargs clang-format --dry-run --Werror
+      - name: Configure
+        run: cmake --preset linux
+      - name: Static analysis
+        run: >
+          git ls-files -- 'src/common/*.cpp' 'src/linux/*.cpp' 'tests/unit/*.cpp'
+          | xargs clang-tidy -p build/linux --warnings-as-errors='*'
+
+  windows:
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@v4
+      - name: Configure
+        run: cmake --preset windows -DIDALINGO_WARNINGS_AS_ERRORS=ON
+      - name: Build
+        run: cmake --build --preset windows --parallel
+      - name: Test
+        run: ctest --preset windows
+      - name: Package
+        run: cmake --install build/windows --config Release --prefix package
+      - uses: actions/upload-artifact@v4
+        with:
+          name: IDALingo-Windows
+          path: package
+
+  linux:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Configure
+        run: cmake --preset linux -DIDALINGO_WARNINGS_AS_ERRORS=ON
+      - name: Build
+        run: cmake --build --preset linux --parallel
+      - name: Test
+        run: ctest --preset linux
+      - name: Package
+        run: cmake --install build/linux --prefix package
+      - uses: actions/upload-artifact@v4
+        with:
+          name: IDALingo-Linux
+          path: package
